@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- meta -->
+        <meta charset="utf-8" />
+        <title>Wandertag App</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+        <meta
+            name="description"
+            content="Author: J.Kell,
+            App to manage the Wandertag in the Mathecamp
+            "
+        />
+        <meta name="theme-color" content="red" media="(prefers-color-scheme: dark)" />
+
+        <!-- js -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+            integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+
+        <!-- links -->
+        <link rel="stylesheet" href="styles.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
+            integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <link rel="manifest" href="app.webmanifest" />
+
+        <!-- favicons -->
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png" />
+        <link rel="mask-icon" href="assets/favicons/safari-pinned-tab.svg" color="#5bbad5" />
+        <meta name="msapplication-TileColor" content="#da532c" />
+    </head>
+    <body>
+        <div class="container">
+            <h1>Wandertag App</h1>
+
+            <img class="centered-image" src="/logo.png" alt="LOGO" />
+            <br />
+            <br />
+            <br />
+            <a class="blue-button" href="/tracking.html">HIER gehts weiter!</a>
+            <br />
+            <br />
+
+            <h3>Disclaimer:</h3>
+
+            <div class="text">
+                <p>Diese App verwendet deinen Standort. Die</p>
+                <p>Dieser wird aufgezeichnet und an einen zentralen Server geschickt.</p>
+                <p>Dabei gesammelten Daten werden nur im Mathezirkel ausgewertet und sind 100% anonym.</p>
+                <p>Außerhalb des Mathecamp läuft kein Server zur Datenaufzeichnung.</p>
+                <p>Die App hat nur Zugriff auf deinen Standort, während sie geöffnet ist, niemals im Hintergrund.</p>
+            </div>
+
+            <h3>Installation:</h3>
+            <div class="text">
+                <p>
+                    Die App kann im Browser geöffnet werden. Dann ist eine Internetverbindung erforderlich (verbraucht sehr wenige
+                    Daten).
+                </p>
+                <p>Wahlweise kann die App auch installiert werden und ist dann komplett offline verfügbar.</p>
+                <p>
+                    Es empfiehlt sich, vor dem Start den "Hard Update App" Button zu verwenden um die neusten Referenzdaten zu
+                    laden.
+                </p>
+
+                <p>
+                    <a href="https://support.google.com/chrome/answer/9658361?hl=de&co=GENIE.Platform%3DAndroid&oco=0"
+                        >Installations-Anleitung Android/Chrome</a
+                    >
+                </p>
+                <p>
+                    <a href="https://support.google.com/chrome/answer/9658361?hl=de&co=GENIE.Platform%3DAndroid&oco=0"
+                        >Installations-Anleitung iOS (Nicht getestet kann sein dass das nicht funktioniert, sorry)</a
+                    >
+                </p>
+            </div>
+
+            <h3>Position-Push:</h3>
+            <div class="text">
+                <p>Alle par Minuten versucht die App die gesammelten Daten zur späteren Analyse an den Server zu senden.</p>
+                <p>Dies sollte quasi keine mobilen Daten verbrauchen.</p>
+                <p>Solltest du dennoch Bedenken haben, kannst du mobile Daten während der App benutzung einfach ausschalten.</p>
+            </div>
+
+            <button id="update_app_button" style="position: fixed; right: 2em; bottom: 2em">Hard Update App</button>
+
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+    </body>
+
+    <script src="app.js"></script>
+</html>

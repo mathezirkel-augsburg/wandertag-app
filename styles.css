@@ -1,0 +1,68 @@
+/* It targets only the app used within the browser */
+@media (display-mode: browser) {
+}
+/* It targets only the app used with a system icon in standalone mode */
+@media (display-mode: standalone) {
+}
+/* It targets only the app used with a system icon in all mode */
+@media (display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui) {
+}
+
+table {
+    border: 2px black solid;
+    border-collapse: collapse;
+    min-width: 100%;
+    overflow: scroll;
+}
+
+td,
+th {
+    border: 1px black solid;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+.centered-image {
+    display: block;
+    margin: 0 auto;
+    width: 50%;
+    max-width: 4cm;
+}
+
+.text {
+    margin-top: 20px;
+}
+
+.blue-button {
+    background-color: blue;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration: none;
+}
