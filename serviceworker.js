@@ -22,6 +22,8 @@ urlsToCache = [
     "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js",
     "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js",
     "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css",
+    "tracking.html",
+    "tracking.js",
 ];
 
 // This code executes in its own worker or thread

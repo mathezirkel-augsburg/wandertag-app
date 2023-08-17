@@ -40,15 +40,28 @@ body {
     margin-top: 20px;
 }
 
-.blue-button {
-    background-color: blue;
-    color: white;
+.status-message {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     font-size: 16px;
     margin-top: 20px;
     cursor: pointer;
+}
+
+.status-message-works {
+    background-color: green;
+    color: white;
+}
+
+.status-message-error {
+    background-color: red;
+    color: white;
+}
+
+.status-message-info {
+    background-color: blue;
+    color: white;
 }
 
 a:link {
