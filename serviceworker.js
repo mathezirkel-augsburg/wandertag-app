@@ -24,6 +24,7 @@ urlsToCache = [
     "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css",
     "tracking.html",
     "tracking.js",
+    "paths.json",
 ];
 
 // This code executes in its own worker or thread
