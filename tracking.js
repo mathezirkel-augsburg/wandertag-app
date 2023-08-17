@@ -1,6 +1,8 @@
 let paths = {};
 let selected_path_key = "";
 let selected_point_index = 0;
+let current_location = [0, 0];
+let current_distance = 0;
 
 $(document).ready(() => {
     var geo_options = {
@@ -44,6 +46,8 @@ $(document).ready(() => {
             $("#select_point").val(stored_select_point);
             console.log("Loaded value for select_point");
         }
+
+        update_distance_to_target();
     }).fail(function () {
         console.error("Could not load JSON");
     });
@@ -52,9 +56,12 @@ $(document).ready(() => {
         localStorage.setItem("select_route", selected_path_key);
 
         set_points_dropdown();
+        update_distance_to_target();
     });
     $("#select_point").on("change", function (value) {
         set_point(parseInt($("#select_point").val()));
+
+        update_distance_to_target();
     });
 
     if ("geolocation" in navigator) {
@@ -81,7 +88,10 @@ $(document).ready(() => {
                     String(position.coords.latitude) + ", " + String(position.coords.longitude)
                 );
 
+                current_location = [position.coords.latitude, position.coords.longitude];
+
                 update_nr_datasets();
+                update_distance_to_target();
             },
             error_func,
             geo_options
@@ -135,6 +145,8 @@ function set_points_dropdown() {
 function set_point(index) {
     selected_point_index = index;
     localStorage.setItem("select_point", selected_point_index);
+
+    update_distance_to_target();
 }
 
 function get_point() {
@@ -153,4 +165,37 @@ function try_uploading_data() {
     console.log("Try Data upload");
 }
 
-function calculate_distance_to_target(latitude, longitude) {}
+function update_distance_to_target() {
+    let target = get_point();
+    let dist = calculate_distance_in_m(target[0], target[1], current_location[0], current_location[1]);
+
+    if (isNaN(dist)) {
+        dist = 0;
+    }
+
+    dist = Math.floor(dist);
+
+    current_distance = dist;
+    console.log("distance updated to " + dist);
+    $("#current_distance").html(dist);
+}
+
+// # https://www.movable-type.co.uk/scripts/latlong.html
+function calculate_distance_in_m(lat1, lon1, lat2, lon2) {
+    console.log(lat1, lon1, lat2, lon2);
+
+    const R = 6371e3; // metres
+    const phi1 = (lat1 * Math.PI) / 180; // φ, λ in radians
+    const phi2 = (lat2 * Math.PI) / 180;
+    const delphi = ((lat2 - lat1) * Math.PI) / 180;
+    const dellam = ((lon2 - lon1) * Math.PI) / 180;
+
+    const a =
+        Math.sin(delphi / 2) * Math.sin(delphi / 2) +
+        Math.cos(phi1) * Math.cos(phi2) * Math.sin(dellam / 2) * Math.sin(dellam / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    const d = R * c; // in metres
+
+    return d;
+}
