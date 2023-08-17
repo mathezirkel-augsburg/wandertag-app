@@ -105,7 +105,7 @@ $(document).ready(() => {
     }
 
     // start upload cycle
-    setInterval(try_uploading_data, 5000);
+    setInterval(try_uploading_data, 10000);
 });
 
 function update_nr_datasets() {
@@ -152,41 +152,48 @@ function try_uploading_data() {
 
     let keys = Object.keys(localStorage);
     i = keys.length;
+    let count = 0;
     while (i--) {
         key = keys[i];
 
         if (key.startsWith("geo_")) {
             keys_to_treat.push(key);
-        }
-        let item = localStorage.getItem(key);
-        let location = item.replace(" ", "").split(",", 2);
-        let time = key.replace("geo_", "");
 
-        message[key] = {
-            lat: location[0],
-            lon: location[1],
-            time: time,
-            ident: client_id,
-        };
+            let item = localStorage.getItem(key);
+            let location = item.replace(" ", "").split(",", 2);
+            let time = key.replace("geo_", "");
+
+            message[key] = {
+                lat: location[0],
+                lon: location[1],
+                time: time,
+                ident: client_id,
+            };
+
+            count++; // avoid payload too large
+            if (count > 15) {
+                break;
+            }
+        }
+    }
+
+    if (count == 0) {
+        return;
     }
 
     // switch to http://localhost:8888/log-data for development
-    jQuery.post(
-        "http://localhost:8888/log-data",
-        {
-            datapoints: message,
-        },
-        function (data) {
-            let worked = data.success && data.success != undefined && data.success != null;
+    jQuery.post("http://localhost:8888/log-data", message, function (data) {
+        let worked = data.success && data.success != undefined && data.success != null;
 
-            if (worked) {
-                console.log("Data sent to server");
-                keys_to_treat.forEach((key) => {
-                    localStorage.removeItem(key);
-                });
-            }
+        if (worked) {
+            console.log("Data sent to server");
+            keys_to_treat.forEach((key) => {
+                localStorage.removeItem(key);
+            });
         }
-    );
+
+        update_nr_datasets();
+    });
 }
 
 function update_distance_to_target() {

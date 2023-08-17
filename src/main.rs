@@ -12,6 +12,7 @@ use actix_web::{
     Responder,
 };
 use dotenv::dotenv;
+use models::{Datapoint, InsertDatapoint};
 use serde::Serialize;
 use std::collections::HashMap;
 use std::env;
@@ -27,10 +28,34 @@ async fn init_route() -> impl Responder {
         .content_type(ContentType::plaintext())
         .body("works")
 }
-async fn upload_route() -> impl Responder {
+async fn upload_route(data: web::Form<HashMap<String, String>>) -> impl Responder {
     debug!("Uploaded");
-    let response = RedeemResponse { success: false };
 
+    let mut result: HashMap<String, HashMap<String, String>> = HashMap::new();
+
+    for (key, value) in data.0 {
+        let parts: Vec<&str> = key.split('[').collect();
+        if parts.len() == 2 {
+            let key_part = parts[0].to_string();
+            let info_part = parts[1].trim_end_matches(']').to_string();
+
+            let entry = result.entry(key_part).or_insert_with(HashMap::new);
+            entry.insert(info_part, value);
+        }
+    }
+
+    for (_, value) in result {
+        let dp = InsertDatapoint {
+            ident: value.get("ident").unwrap().parse::<i32>().unwrap(),
+            lat: value.get("lat").unwrap().parse::<f32>().unwrap(),
+            lon: value.get("lon").unwrap().parse::<f32>().unwrap(),
+            time: value.get("time").unwrap().parse::<i64>().unwrap(),
+        };
+
+        Datapoint::create(dp).unwrap();
+    }
+
+    let response = RedeemResponse { success: true };
     web::Json(response)
 }
 async fn request_route(query: web::Query<HashMap<String, String>>) -> impl Responder {
@@ -47,11 +72,11 @@ async fn request_route(query: web::Query<HashMap<String, String>>) -> impl Respo
     if access {
         HttpResponse::Ok()
             .content_type(ContentType::json())
-            .body("[]")
+            .body("[\"asdasd\"]")
     } else {
         HttpResponse::Ok()
             .content_type(ContentType::json())
-            .body("[]")
+            .body("{\"forbidden\": true}")
     }
 }
 

@@ -7,6 +7,15 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, AsChangeset, Insertable, Queryable)]
 #[diesel(table_name = datapoints)]
+pub struct InsertDatapoint {
+    pub lat: f32,
+    pub lon: f32,
+    pub time: i64,
+    pub ident: i32,
+}
+
+#[derive(Serialize, Deserialize, AsChangeset, Queryable)]
+#[diesel(table_name = datapoints)]
 pub struct Datapoint {
     pub id: i32,
     pub lat: f32,
@@ -25,7 +34,7 @@ impl Datapoint {
             .first(&mut db::connection()?)?)
     }
 
-    pub fn create(datapoint: Datapoint) -> Result<Self, CustomError> {
+    pub fn create(datapoint: InsertDatapoint) -> Result<Self, CustomError> {
         Ok(diesel::insert_into(datapoints::table)
             .values(datapoint)
             .get_result(&mut db::connection()?)?)

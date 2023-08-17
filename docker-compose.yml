@@ -28,6 +28,7 @@ services:
             - RUST_LOG=debug,actix=off,diesel_migrations=off
             - DATABASE_URL=postgres://databaseuser:databasepassword@database:5432/databasename
         command: cargo watch -x run
+        restart: always
 
 volumes:
     database_volume:
