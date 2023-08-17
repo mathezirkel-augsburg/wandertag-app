@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+    database:
+        image: postgres:alpine
+        ports:
+            - "5432:5432"
+        environment:
+            - POSTGRES_USER=databaseuser
+            - POSTGRES_PASSWORD=databasepassword
+            - POSTGRES_DB=databasename
+        volumes:
+            - database_volume:/var/lib/postgresql/data
+        restart: always
+
+    webserver:
+        depends_on:
+            - database
+        build:
+            context: ./
+            dockerfile: ./docker/dev-webserver/Dockerfile
+        ports:
+            - "8888:8888"
+        volumes:
+            - rust_build_cache:/usr/local/cargo/registry/
+            - ./:/app/
+        environment:
+            - RUST_LOG=debug,actix=off,diesel_migrations=off
+            - DATABASE_URL=postgres://databaseuser:databasepassword@database:5432/databasename
+        command: cargo watch -x run
+
+volumes:
+    database_volume:
+    rust_build_cache:

@@ -4,6 +4,8 @@ let selected_point_index = 0;
 let current_location = [0, 0];
 let current_distance = 0;
 
+let client_id = Math.floor(Math.random() * 30000);
+
 $(document).ready(() => {
     var geo_options = {
         enableHighAccuracy: true,
@@ -102,25 +104,8 @@ $(document).ready(() => {
         $("#geolocation_works").addClass("status-message-error").removeClass("status-message-works");
     }
 
-    // dump
-    $("#dump_data").on("click", () => {
-        console.log("dump");
-
-        result = "";
-        keys = Object.keys(localStorage);
-        i = keys.length;
-        while (i--) {
-            key = keys[i];
-            item = localStorage.getItem(key);
-
-            result += key + ", " + item + "\n";
-        }
-
-        download("data.csv", result);
-    });
-
     // start upload cycle
-    setInterval(try_uploading_data, 1000);
+    setInterval(try_uploading_data, 5000);
 });
 
 function update_nr_datasets() {
@@ -162,7 +147,46 @@ function geolocation_success() {
 }
 
 function try_uploading_data() {
-    console.log("Try Data upload");
+    let keys_to_treat = [];
+    let message = {};
+
+    let keys = Object.keys(localStorage);
+    i = keys.length;
+    while (i--) {
+        key = keys[i];
+
+        if (key.startsWith("geo_")) {
+            keys_to_treat.push(key);
+        }
+        let item = localStorage.getItem(key);
+        let location = item.replace(" ", "").split(",", 2);
+        let time = key.replace("geo_", "");
+
+        message[key] = {
+            lat: location[0],
+            lon: location[1],
+            time: time,
+            ident: client_id,
+        };
+    }
+
+    // switch to http://localhost:8888/log-data for development
+    jQuery.post(
+        "http://localhost:8888/log-data",
+        {
+            datapoints: message,
+        },
+        function (data) {
+            let worked = data.success && data.success != undefined && data.success != null;
+
+            if (worked) {
+                console.log("Data sent to server");
+                keys_to_treat.forEach((key) => {
+                    localStorage.removeItem(key);
+                });
+            }
+        }
+    );
 }
 
 function update_distance_to_target() {
