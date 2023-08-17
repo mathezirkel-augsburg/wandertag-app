@@ -16,6 +16,7 @@ use models::{Datapoint, InsertDatapoint};
 use serde::Serialize;
 use std::collections::HashMap;
 use std::env;
+use std::fmt::Write;
 
 #[derive(Serialize)]
 struct RedeemResponse {
@@ -70,9 +71,24 @@ async fn request_route(query: web::Query<HashMap<String, String>>) -> impl Respo
     }
 
     if access {
+        let mut output: String = String::from("[\n");
+
+        for point in Datapoint::find_all().unwrap() {
+            write!(
+                output,
+                "[{}, {}, {}, {}],\n",
+                point.ident, point.time, point.lat, point.lon
+            )
+            .unwrap();
+        }
+
+        output.pop();
+        output.pop();
+        write!(output, "\n]").unwrap();
+
         HttpResponse::Ok()
             .content_type(ContentType::json())
-            .body("[\"asdasd\"]")
+            .body(output)
     } else {
         HttpResponse::Ok()
             .content_type(ContentType::json())
