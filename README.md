@@ -6,6 +6,8 @@ A PWA that gives target coordinates and records movement progress.
 
 Hosted and installable (as a [PWA](https://web.dev/progressive-web-apps/)) under [https://mathezirkel-augsburg.github.io/wandertag-app/](https://mathezirkel-augsburg.github.io/wandertag-app/).
 
+![QR](qr.png)
+
 ### Local testing
 
 Run in the base of the project:
