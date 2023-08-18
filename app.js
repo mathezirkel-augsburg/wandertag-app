@@ -2,6 +2,8 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("serviceworker.js");
 }
 
+let secret_counter = 0;
+
 $(document).ready(() => {
     $("#update_app_button").on("click", function () {
         if ("serviceWorker" in navigator) {
@@ -21,6 +23,13 @@ $(document).ready(() => {
                 // hard reload with cache clear
                 location.reload(true);
             });
+        }
+    });
+
+    $("#secret").on("click", function () {
+        secret_counter++;
+        if (secret_counter > 9) {
+            window.location.href = "secret.html";
         }
     });
 

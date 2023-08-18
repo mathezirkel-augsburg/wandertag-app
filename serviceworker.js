@@ -22,8 +22,13 @@ urlsToCache = [
     "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js",
     "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js",
     "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css",
+    "https://cdn.jsdelivr.net/npm/ol@v7.5.1/ol.css",
+    "https://cdnjs.cloudflare.com/ajax/libs/openlayers/7.5.0/dist/ol.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/mapbox-polyline/1.2.0/polyline.min.js",
     "tracking.html",
     "tracking.js",
+    "secret.html",
+    "secret.js",
     "paths.json",
     "logo.png",
 ];
@@ -38,7 +43,11 @@ self.addEventListener("install", (event) => {
             // add cache busting param for own .js and .html
             let bust = Date.now();
             let urls_with_cache_bust = urlsToCache.map((url) =>
-                url.includes(".html") || (url.includes(".js") && !url.includes(".min.js")) ? url + "?bust=" + bust : url
+                url.includes(".html") ||
+                (url.includes(".js") && !url.includes(".min.js")) ||
+                (url.includes(".css") && !url.includes("cdn"))
+                    ? url + "?bust=" + bust
+                    : url
             );
 
             return cache.addAll(urls_with_cache_bust);

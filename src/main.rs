@@ -90,9 +90,7 @@ async fn request_route(query: web::Query<HashMap<String, String>>) -> impl Respo
             .content_type(ContentType::json())
             .body(output)
     } else {
-        HttpResponse::Ok()
-            .content_type(ContentType::json())
-            .body("{\"forbidden\": true}")
+        HttpResponse::Unauthorized().finish()
     }
 }
 
