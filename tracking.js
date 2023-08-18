@@ -45,7 +45,6 @@ $(document).ready(() => {
         set_points_dropdown();
         if (stored_select_point != undefined && stored_select_point != null) {
             set_point(stored_select_point);
-            $("#select_point").val(stored_select_point);
             console.log("Loaded value for select_point");
         }
 
@@ -130,7 +129,7 @@ function set_points_dropdown() {
 function set_point(index) {
     selected_point_index = index;
     localStorage.setItem("select_point", selected_point_index);
-
+    $("#select_point").val(selected_point_index);
     update_distance_to_target();
 }
 
@@ -209,6 +208,15 @@ function update_distance_to_target() {
     current_distance = dist;
     console.log("distance updated to " + dist);
     $("#current_distance").html(dist);
+
+    if (current_distance < 10) {
+        if (paths[selected_path_key].length - 1 > selected_point_index) {
+            toastr.success("Zwischen Wegpunkt erreicht!");
+            set_point(selected_point_index + 1);
+        } else {
+            toastr.success("Zielpunkt erreicht!!");
+        }
+    }
 }
 
 // # https://www.movable-type.co.uk/scripts/latlong.html

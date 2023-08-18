@@ -25,6 +25,7 @@ urlsToCache = [
     "tracking.html",
     "tracking.js",
     "paths.json",
+    "logo.png",
 ];
 
 // This code executes in its own worker or thread
