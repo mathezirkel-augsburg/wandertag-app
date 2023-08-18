@@ -19,7 +19,7 @@ $(document).ready(() => {
         $("#geolocation_works").addClass("status-message-error").removeClass("status-message-works");
     };
 
-    $.getJSON("/paths.json", function (data) {
+    $.getJSON("./paths.json", function (data) {
         console.log("Datapoints could be loaded");
 
         paths = data;
