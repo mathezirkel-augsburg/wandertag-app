@@ -2,6 +2,7 @@ let paths = {};
 let selected_path_key = "";
 let selected_point_index = 0;
 let current_location = [0, 0];
+let last_reported_location = [0, 0];
 let current_distance = 0;
 
 let client_id = Math.floor(Math.random() * 30000);
@@ -84,10 +85,22 @@ $(document).ready(() => {
             function (position) {
                 geolocation_success();
                 console.log(position.coords.latitude, position.coords.longitude);
-                localStorage.setItem(
-                    "geo_" + Date.now(),
-                    String(position.coords.latitude) + ", " + String(position.coords.longitude)
-                );
+                if (
+                    calculate_distance_in_m(
+                        position.coords.latitude,
+                        position.coords.longitude,
+                        last_reported_location[0],
+                        last_reported_location[1]
+                    ) > 10
+                ) {
+                    // track for reporting
+                    localStorage.setItem(
+                        "geo_" + Date.now(),
+                        String(position.coords.latitude) + ", " + String(position.coords.longitude)
+                    );
+
+                    last_reported_location = [position.coords.latitude, position.coords.longitude];
+                }
 
                 current_location = [position.coords.latitude, position.coords.longitude];
 
