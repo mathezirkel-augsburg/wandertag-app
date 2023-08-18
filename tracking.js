@@ -121,7 +121,17 @@ $(document).ready(() => {
 });
 
 function update_nr_datasets() {
-    $("#nr_datasets").html(localStorage.length - 2);
+    let keys = Object.keys(localStorage);
+    i = keys.length;
+    let count = 0;
+    while (i--) {
+        let key = keys[i];
+        if (key.startsWith("geo_")) {
+            count++;
+        }
+    }
+
+    $("#nr_datasets").html(count);
 }
 
 function set_points_dropdown() {
